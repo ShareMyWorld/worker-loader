@@ -8,7 +8,13 @@ const getWorker = (file, content, options) => {
 
   const publicWorkerPath = `${publicPath} + ${JSON.stringify(file)}`;
 
-  if (options.inline) {
+  if (options.rawContents) {
+    const RawContentsPath = JSON.stringify(`!!${
+      path.join(__dirname, 'RawContents.js')
+    }`);
+
+    return `require(${RawContentsPath})(${JSON.stringify(content)})`;
+  } else if (options.inline) {
     const InlineWorkerPath = JSON.stringify(`!!${
       path.join(__dirname, 'InlineWorker.js')
     }`);
